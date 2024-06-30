@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
-A basic Flask web server that provides an API endpoint to greet visitors
-and returns their IP address and location.
+A basic Flask web server that provides an API endpoint to greet visitors,
+returns their IP address, location, and current temperature.
 
 API Endpoint:
     GET /api/hello?visitor_name=<name>
@@ -9,12 +9,8 @@ API Endpoint:
 Response:
     {
         "client_ip": "<IP address of the requester>",
-        "location": {
-            "city": "<City of the requester>",
-            "region": "<Region of the requester>",
-            "country": "<Country of the requester>"
-        },
-        "greeting": "Hello, <name>!"
+        "location": "<City, Country of the requester>",
+        "greeting": "Hello, <name>!, the temperature is <temperature> degrees Celsius in <City>"
     }
 """
 
@@ -26,8 +22,9 @@ import os
 # Load environment variables from a .env file
 load_dotenv()
 
-# Get the IPINFO token from the environment variables
+# Get the IPINFO token and OpenWeatherMap API key from the environment variables
 IPINFO_TOKEN = os.getenv('IPINFO_TOKEN')
+WEATHER_API_KEY = os.getenv('WEATHER_API_KEY')
 
 app = Flask(__name__)
 
@@ -54,6 +51,23 @@ def get_location(ip):
         print(f'Error fetching location: {e}')
         return {'city': 'Unknown', 'region': 'Unknown', 'country': 'Unknown'}
 
+def get_temperature(city):
+    """
+    Get the current temperature for a given city using the OpenWeatherMap API.
+
+    Args:
+        city (str): The name of the city.
+
+    Returns:
+        float: The current temperature in Celsius.
+    """
+    try:
+        response = requests.get(f'http://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&appid={WEATHER_API_KEY}')
+        data = response.json()
+        return data['main']['temp']
+    except Exception as e:
+        print(f'Error fetching temperature: {e}')
+        return None
 
 @app.route('/', methods=['GET'])
 def hello_world():
@@ -74,18 +88,22 @@ def hello():
         visitor_name (str): The name of the visitor (optional).
 
     Returns:
-        JSON: A JSON response containing the client's IP address, public IP address of the server,
-              location, and a greeting message.
+        JSON: A JSON response containing the client's IP address, location,
+              temperature, and a greeting message.
     """
     visitor_name = request.args.get('visitor_name', 'Guest')
     client_ip = request.remote_addr
     location = get_location(client_ip)
-    formatted_location = f"{location['city']}, {location['country']}"
-    
+    city = location['city']
+    temperature = get_temperature(city)
+
+    formatted_location = f"{city}, {location['country']}"
+    greeting = f"Hello, {visitor_name}!, the temperature is {temperature} degrees Celsius in {city}"
+
     response = {
         "client_ip": client_ip,
         "location": formatted_location,
-        "greeting": f"Hello, {visitor_name}!"
+        "greeting": greeting
     }
     return jsonify(response)
 
