@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Website</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <h1 data-testid="slackDisplayName">Phoenix</h1>
+        <img src="./profile.jpg" alt="Slack Profile Picture" data-testid="slackProfilePicture" width="1080" height="827">
+    </div>
+
+</header>
+
+<main>
+    <section class="info">
+        <p data-testid="currentTimeUTC"></p>
+        <p data-testid="currentDay"></p>
+        <p data-testid="slackEmail">ayomikuntemitope246@gmail.com</p>
+    </section>
+    <section class="goals">
+        <h2>My Tech Goals for the Next 2 Years</h2>
+        <ul>
+            <li>Master advanced cybersecurity techniques</li>
+            <li>Develop multiple full-stack web applications</li>
+            <li>Contribute to open-source projects</li>
+            <li>Gain proficiency in cloud computing</li>
+            <li>As a way of giving back to the community I plan on training others.</li>
+        </ul>
+    </section>
+</main>
+
+<footer>
+    <a href="https://hng.tech/learn" data-testid="hngLink">HNG Learn</a>
+    <a href="https://keyword.dog" data-testid="keywordLink">Keyword Dog</a>
+    <a href="https://scrapeanyweb.site" data-testid="scrapeanywebLink">Scrape Any Web</a>
+</footer>
+
+<script src="script.js" defer></script>
+</body>
+</html>

@@ -19,14 +19,14 @@ import requests
 from dotenv import load_dotenv
 import os
 
-# Load environment variables from a .env file
 load_dotenv()
 
-# Get the IPINFO token and OpenWeatherMap API key from the environment variables
+
 IPINFO_TOKEN = os.getenv('IPINFO_TOKEN')
 WEATHER_API_KEY = os.getenv('WEATHER_API_KEY')
 
 app = Flask(__name__)
+
 
 def get_location(ip):
     """
@@ -40,7 +40,8 @@ def get_location(ip):
               or "Unknown" if unable to fetch.
     """
     try:
-        response = requests.get(f'https://ipinfo.io/{ip}/json?token={IPINFO_TOKEN}')
+        response = requests.get(
+            f'https://ipinfo.io/{ip}/json?token={IPINFO_TOKEN}')
         data = response.json()
         return {
             'city': data.get('city', 'Unknown'),
@@ -50,6 +51,7 @@ def get_location(ip):
     except Exception as e:
         print(f'Error fetching location: {e}')
         return {'city': 'Unknown', 'region': 'Unknown', 'country': 'Unknown'}
+
 
 def get_temperature(city):
     """
@@ -62,12 +64,14 @@ def get_temperature(city):
         float: The current temperature in Celsius.
     """
     try:
-        response = requests.get(f'http://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&appid={WEATHER_API_KEY}')
+        response = requests.get(
+            f'http://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&appid={WEATHER_API_KEY}')
         data = response.json()
         return data['main']['temp']
     except Exception as e:
         print(f'Error fetching temperature: {e}')
         return None
+
 
 @app.route('/', methods=['GET'])
 def hello_world():
@@ -78,6 +82,7 @@ def hello_world():
         str: A simple "Hello, World!" message.
     """
     return "Hello, World!"
+
 
 @app.route('/api/hello', methods=['GET'])
 def hello():
@@ -106,6 +111,7 @@ def hello():
         "greeting": greeting
     }
     return jsonify(response)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
