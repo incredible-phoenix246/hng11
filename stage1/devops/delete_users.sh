@@ -6,9 +6,11 @@ LOG_FILE="/var/log/user_deletion.log"
 # Ensure the log file exists and create it if it doesn't
 touch $LOG_FILE
 
-# Log message function
-log_message() {
-    echo "$(date +'%Y-%m-%d %H:%M:%S') - $1" >> $LOG_FILE
+# Combined log and echo function
+log_and_echo() {
+    message="$(date +'%Y-%m-%d %H:%M:%S') - $1"
+    echo $message
+    echo $message >> $LOG_FILE
 }
 
 # Check if a file was provided
@@ -27,18 +29,16 @@ while IFS=';' read -r username groups; do
         continue
     fi
 
-    echo "Processing user deletion: $username"
+    log_and_echo "Processing user deletion: $username"
 
     # Check if user exists
     if id -u "$username" >/dev/null 2>&1; then
         # Delete the user and their home directory
         userdel -r "$username"
         if [ $? -eq 0 ]; then
-            log_message "User $username deleted along with home directory."
-            echo "User $username deleted along with home directory."
+            log_and_echo "User $username deleted along with home directory."
         else
-            log_message "Failed to delete user $username."
-            echo "Failed to delete user $username."
+            log_and_echo "Failed to delete user $username."
             continue
         fi
 
@@ -47,20 +47,16 @@ while IFS=';' read -r username groups; do
             if ! getent passwd | grep -q ":$username:"; then
                 groupdel "$username"
                 if [ $? -eq 0 ]; then
-                    log_message "Primary group $username deleted."
-                    echo "Primary group $username deleted."
+                    log_and_echo "Primary group $username deleted."
                 else
-                    log_message "Failed to delete primary group $username."
-                    echo "Failed to delete primary group $username."
+                    log_and_echo "Failed to delete primary group $username."
                 fi
             fi
         fi
     else
-        log_message "User $username does not exist. Skipping deletion."
-        echo "User $username does not exist. Skipping deletion."
+        log_and_echo "User $username does not exist. Skipping deletion."
     fi
 
 done < "$1"
 
-log_message "User deletion process completed."
-echo "User deletion process completed."
+log_and_echo "User deletion process completed."
