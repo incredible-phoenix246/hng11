@@ -19,13 +19,9 @@ This is a basic Flask web server that provides an API endpoint to greet visitors
 
 ```json
 {
-  "client_ip": "127.0.0.1",
-  "location": {
-    "city": "New York",
-    "region": "New York",
-    "country": "US"
-  },
-  "greeting": "Hello, Phoenix!"
+  "client_ip": "<IP address of the requester>",
+  "location": "<City, Country of the requester>",
+  "greeting": "Hello, <name>!, the temperature is <temperature> degrees Celsius in <City>"
 }
 ```
 
