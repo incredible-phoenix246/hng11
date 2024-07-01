@@ -21,56 +21,35 @@ import os
 
 load_dotenv()
 
-
-IPINFO_TOKEN = os.getenv('IPINFO_TOKEN')
 WEATHER_API_KEY = os.getenv('WEATHER_API_KEY')
 
 app = Flask(__name__)
 
 
-def get_location(ip):
+def get_weather_info(ip):
     """
-    Get the location of the IP address using the ipinfo.io API.
+    Get the weather information and location for a given IP address using the WeatherAPI.
 
     Args:
         ip (str): The IP address of the requester.
 
     Returns:
-        dict: A dictionary containing the city, region, and country corresponding to the IP address,
-              or "Unknown" if unable to fetch.
+        dict: A dictionary containing the city, country, and temperature in Celsius.
     """
     try:
         response = requests.get(
-            f'https://ipinfo.io/{ip}/json?token={IPINFO_TOKEN}')
+            f'https://api.weatherapi.com/v1/current.json?key={WEATHER_API_KEY}&q={ip}&aqi=no')
         data = response.json()
+        location = data['location']
+        current = data['current']
         return {
-            'city': data.get('city', 'Unknown'),
-            'region': data.get('region', 'Unknown'),
-            'country': data.get('country', 'Unknown')
+            'city': location['name'],
+            'country': location['country'],
+            'temperature': current['temp_c']
         }
     except Exception as e:
-        print(f'Error fetching location: {e}')
-        return {'city': 'Unknown', 'region': 'Unknown', 'country': 'Unknown'}
-
-
-def get_temperature(city):
-    """
-    Get the current temperature for a given city using the OpenWeatherMap API.
-
-    Args:
-        city (str): The name of the city.
-
-    Returns:
-        float: The current temperature in Celsius.
-    """
-    try:
-        response = requests.get(
-            f'http://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&appid={WEATHER_API_KEY}')
-        data = response.json()
-        return data['main']['temp']
-    except Exception as e:
-        print(f'Error fetching temperature: {e}')
-        return None
+        print(f'Error fetching weather information: {e}')
+        return {'city': 'Unknown', 'country': 'Unknown', 'temperature': 'Unknown'}
 
 
 @app.route('/', methods=['GET'])
@@ -98,11 +77,12 @@ def hello():
     """
     visitor_name = request.args.get('visitor_name', 'Guest')
     client_ip = request.remote_addr
-    location = get_location(client_ip)
-    city = location['city']
-    temperature = get_temperature(city)
+    weather_info = get_weather_info(client_ip)
 
-    formatted_location = f"{city}, {location['country']}"
+    city = weather_info['city']
+    country = weather_info['country']
+    temperature = weather_info['temperature']
+    formatted_location = f"{city}, {country}"
     greeting = f"Hello, {visitor_name}!, the temperature is {temperature} degrees Celsius in {city}"
 
     response = {
