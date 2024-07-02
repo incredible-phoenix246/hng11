@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Personal Website</title>
+    <meta
+      name="description"
+      content="Phoenix's personal website outlining tech goals for the next 2 years."
+    />
+    <meta
+      name="keywords"
+      content="Phoenix, tech goals, cybersecurity, frontend development, full-stack development, AI, machine learning"
+    />
+    <meta name="author" content="Phoenix" />
+
+    <meta property="og:title" content="Phoenix's Tech Goals" />
+    <meta
+      property="og:description"
+      content="Phoenix's personal website outlining tech goals for the next 2 years."
+    />
+    <meta property="og:image" content="/phoenixdahdev.png" />
+    <meta
+      property="og:url"
+      content="https://hng11-stage-one-frontend.vercel.app"
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Phoenix's Tech Goals" />
+    <meta
+      name="twitter:description"
+      content="Phoenix's personal website outlining tech goals for the next 2 years."
+    />
+    <meta name="twitter:image" content="/phoenixdahdev.png" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="site.webmanifest" />
+  </head>
+  <body>
+    <header data-testid="header">
+      <h2 class="logo" data-testid="logo">Tech Goals</h2>
+    </header>
+
+    <section class="home" id="home" data-testid="profileSection">
+      <div class="home-img" data-testid="image">
+        <img
+          src="./profile.jpg"
+          alt="Slack Profile Picture"
+          data-testid="slackProfilePicture"
+          width="1080"
+          height="827"
+        />
+      </div>
+      <div class="home-text" data-testid="profileText">
+        <span>Hello, I'm</span>
+        <h1 data-testid="slackDisplayName">Phoenix</h1>
+        <h2 data-testid="slackEmail">ayomikuntemitope246@gmail.com</h2>
+        <p data-testid="currentTimeUTC">
+          Current UTC Time: <span data-testid="currentTime"></span>
+        </p>
+        <p data-testid="currentDay">
+          Current Day: <span data-testid="currentDayText"></span>
+        </p>
+        <h2 data-testid="tech-stack">Full-stack developer</h2>
+        <p data-testid="desc">
+          I'll be taking you through my <br />
+          goals for the next 2 years <br />
+        </p>
+      </div>
+    </section>
+
+    <section data-testid="goals" class="card-section">
+      <div class="card" data-testid="goal-1">
+        <p class="card-title" data-testid="goal-tittle">
+          Gain Expertise in Cyber Security
+        </p>
+        <p class="small-desc" data-testid="goal-description">
+          I plan to deepen my knowledge in cyber security, focusing on threat
+          analysis, ethical hacking, and security protocols. By earning relevant
+          certifications and participating in cybersecurity challenges and
+          competitions, I aim to enhance my skills and contribute to creating
+          secure applications and systems.
+        </p>
+        <div class="go-corner">
+          <div class="go-arrow">→</div>
+        </div>
+      </div>
+      <div class="card" data-testid="goal-2">
+        <p class="card-title" data-testid="goal-tittle">
+          Enhance my Full-stack Capabilities
+        </p>
+        <p class="small-desc" data-testid="goal-description">
+          Over the next two years, I aim to transition from a frontend developer
+          to a full-stack developer. This involves gaining proficiency in
+          backend technologies such as Node.js, Express.js, and databases like
+          MongoDB and PostgreSQL. My goal is to be able to develop and manage
+          complete web applications independently.
+        </p>
+        <div class="go-corner">
+          <div class="go-arrow">→</div>
+        </div>
+      </div>
+      <div class="card">
+        <p class="card-title" data-testid="goal-tittle">
+          Continuous Personal Growth
+        </p>
+        <p class="small-desc" data-testid="goal-description">
+          I aim to foster personal growth by committing to continuous learning.
+          This includes reading books, attending workshops, and practicing
+          mindfulness through meditation and journaling. By dedicating time to
+          personal development, I intend to balance my professional skills and
+          personal well-being.
+        </p>
+        <div class="go-corner">
+          <div class="go-arrow">→</div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <a target="_blank" href="https://hng.tech/learn" data-testid="hngLink"
+        >HNG Learn</a
+      >
+      <a target="_blank" href="https://keyword.dog" data-testid="keywordLink"
+        >Keyword Dog</a
+      >
+      <a
+        target="_blank"
+        href="https://scrapeanyweb.site"
+        data-testid="scrapeanywebLink"
+        >Scrape Any Web</a
+      >
+    </footer>
+    <script defer>
+      const currentTimeElement = document.querySelector(
+        '[data-testid="currentTime"]'
+      );
+      const currentDayElement = document.querySelector(
+        '[data-testid="currentDayText"]'
+      );
+
+      function updateCurrentTime() {
+        const currentTime = new Date().toUTCString();
+        currentTimeElement.textContent = currentTime;
+      }
+
+      function updateCurrentDay() {
+        const days = [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ];
+        const currentDayIndex = new Date().getDay();
+        const currentDay = days[currentDayIndex];
+        currentDayElement.textContent = currentDay;
+      }
+
+      updateCurrentTime();
+      updateCurrentDay();
+
+      setInterval(updateCurrentTime, 60000);
+    </script>
+  </body>
+</html>
